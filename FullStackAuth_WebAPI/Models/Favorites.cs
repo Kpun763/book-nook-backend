@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FullStackAuth_WebAPI.Models
 {
@@ -15,11 +16,12 @@ namespace FullStackAuth_WebAPI.Models
         public string Title { get; set; }
         [Required]
         public string ThumbnailUrl { get; set; }
-        [Required]
+
+        [ForeignKey("User")]
         public string UserId { get; set; }
 
-        [Required]
-        public string User { get; set; }
+       
+        public User User { get; set; }
 
     }
 }

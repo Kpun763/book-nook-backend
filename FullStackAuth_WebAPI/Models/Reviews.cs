@@ -15,10 +15,10 @@ namespace FullStackAuth_WebAPI.Models
         [Required]
         public double Rating { get; set; }
 
-        [Required]
+       
         public string UserId { get; set; }
 
-        [Required]
+      
         public string User { get; set; }
 
       
