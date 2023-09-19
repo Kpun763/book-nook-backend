@@ -1,5 +1,7 @@
 ﻿using FullStackAuth_WebAPI.Data;
 using FullStackAuth_WebAPI.DataTransferObjects;
+using FullStackAuth_WebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -8,7 +10,7 @@ using System.Net;
 
 namespace FullStackAuth_WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/bookdetails")]
     [ApiController]
     public class BookDetailController : ControllerBase
     {
@@ -21,44 +23,38 @@ namespace FullStackAuth_WebAPI.Controllers
 
         // GET api/<BookDetailController>/5
         [HttpGet("{id}")]
-        public async Task <IActionResult> Get(int id)
+        public IActionResult Get(int id)
         {
             try
             {
-                var book = await _context.BookDetailsDtos.FindAsync(id);
-              
+           
+                
 
-                if (book == null)
+                //Retrieve all Books Reviews from the database, using Dtos
+                var books = _context.Reviews.Select(b => new ReviewWithUserDTO
                 {
-                    return NotFound();
-                }
+                    Id = b.Id,
+                    BookId = b.BookId,
+                    Rating = b.Rating,
+                    Text = b.Text,
+                    
+                    Username = new UserForDisplayDto
+                    {
+                        Id = b.User.Id,
+                        FirstName = b.User.FirstName,
+                        LastName = b.User.LastName,
+                        UserName = b.User.UserName,
+                    }
+                }).ToList();
 
-                var reviews = await _context.Reviews
-                .Where(r => r.BookId == id)
-                .Select(r => new ReviewWithUserDTO
-                {
-                    Id = r.BookId,
-                    Text = r.Text,
-                    Rating = r.Rating,
-                })
-                    .ToListAsync();
-                double averageRating = reviews.Any() ? reviews.Average(r => r.Rating) : 0;
-
-                var bookDetails = new BookDetailsDto
-                {
-                    Reviews = reviews,
-                    AverageRating = averageRating,
-
-                };
-                return Ok(bookDetails);
-
+                // Return the list of book reviews as a 200 OK response
+                return StatusCode(200, books);
             }
             catch (Exception ex)
             {
+                // If an error occurs, return a 500 internal server error with the error message
                 return StatusCode(500, ex.Message);
             }
-
-            
         }
 
 

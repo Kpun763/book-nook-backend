@@ -13,6 +13,7 @@ namespace FullStackAuth_WebAPI.Data
         public DbSet<Reviews> Reviews { get; set; }
         public DbSet<Favorites> Favorites { get; set; }
         public DbSet<BookDetailsDto> BookDetailsDtos { get; set; }
+        public DbSet<ReviewWithUserDTO> ReviewsDtos { get; set; }
 
         public ApplicationDbContext(DbContextOptions options)
     : base(options)
