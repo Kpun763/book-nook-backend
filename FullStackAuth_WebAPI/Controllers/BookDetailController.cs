@@ -22,7 +22,7 @@ namespace FullStackAuth_WebAPI.Controllers
         }
 
         // GET api/<BookDetailController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public IActionResult Get(int id)
         {
             try
