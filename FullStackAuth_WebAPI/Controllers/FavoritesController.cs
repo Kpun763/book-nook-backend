@@ -30,7 +30,7 @@ namespace FullStackAuth_WebAPI.Controllers
                 
 
                 //Retrieve all books from the database, using Dtos
-                var cars = _context.Favorites.Select(f => new BookDetailsDto
+                var favorites = _context.Favorites.Select(f => new BookDetailsDto
                 {
                     Id = f.Id,
                     Title = f.Title,
@@ -39,8 +39,8 @@ namespace FullStackAuth_WebAPI.Controllers
                   
                 }).ToList();
 
-                // Return the list of cars as a 200 OK response
-                return StatusCode(200, cars);
+                // Return favorites as a 200 OK response
+                return StatusCode(200, favorites);
             }
             catch (Exception ex)
             {
