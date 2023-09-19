@@ -1,4 +1,5 @@
 ﻿using FullStackAuth_WebAPI.Configuration;
+using FullStackAuth_WebAPI.DataTransferObjects;
 using FullStackAuth_WebAPI.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace FullStackAuth_WebAPI.Data
         public DbSet<User> User { get; set; }
         public DbSet<Reviews> Reviews { get; set; }
         public DbSet<Favorites> Favorites { get; set; }
+        public DbSet<BookDetailsDto> BookDetailsDtos { get; set; }
 
         public ApplicationDbContext(DbContextOptions options)
     : base(options)

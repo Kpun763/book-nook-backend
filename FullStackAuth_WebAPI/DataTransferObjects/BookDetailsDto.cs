@@ -9,5 +9,9 @@
         public string BookId { get; set; }
 
         public string Url { get; set; }
+
+        public ICollection<ReviewWithUserDTO> Reviews { get; set; }
+
+        public double AverageRating { get; set; }
     }
 }
