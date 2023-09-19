@@ -47,6 +47,20 @@ namespace FullStackAuth_WebAPI.Controllers
                     }
                 }).ToList();
 
+
+                double averageRating = 0.0;
+                if (books.Any())
+                {
+                    averageRating = books.Average(r => r.Rating);
+                }
+
+                // Return the list of book reviews along with the average rating as a response
+                var response = new
+                {
+                    Reviews = books,
+                    AverageRating = averageRating
+                };
+
                 // Return the list of book reviews as a 200 OK response
                 return StatusCode(200, books);
             }
