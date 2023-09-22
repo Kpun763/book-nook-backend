@@ -221,7 +221,7 @@ namespace FullStackAuth_WebAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    BookId = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<string>(type: "longtext", nullable: true),
                     Text = table.Column<string>(type: "longtext", nullable: true),
                     Rating = table.Column<double>(type: "double", nullable: false),
                     UserId = table.Column<string>(type: "varchar(255)", nullable: true)
@@ -242,8 +242,8 @@ namespace FullStackAuth_WebAPI.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "74131bf8-b52c-4dea-8a9d-621e499e9762", null, "Admin", "ADMIN" },
-                    { "c86f725b-f417-444d-9f93-21081c7d46b1", null, "User", "USER" }
+                    { "1a99496e-3a72-4a6a-999d-568206311876", null, "Admin", "ADMIN" },
+                    { "8a098ca6-be95-4b6d-a34f-e154a4c2844e", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

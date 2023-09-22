@@ -27,17 +27,9 @@ namespace FullStackAuth_WebAPI.Controllers
         {
             try
             {
-                
-
+                string userId = User.FindFirstValue("id");
                 //Retrieve all books from the database, using Dtos
-                var favorites = _context.Favorites.Select(f => new BookDetailsDto
-                {
-                    Id = f.Id,
-                    Title = f.Title,
-                    BookId = f.BookId,
-                    Url = f.ThumbnailUrl,
-                  
-                }).ToList();
+                var favorites = _context.Favorites.Where(f => f.UserId == userId).ToList();
 
                 // Return favorites as a 200 OK response
                 return StatusCode(200, favorites);
@@ -67,8 +59,7 @@ namespace FullStackAuth_WebAPI.Controllers
                     return Unauthorized();
                 }
 
-                // Set the car's owner ID  the authenticated user's ID we found earlier
-                data.UserId = userId;
+               
 
                 // Add the book to the database and save changes
                 _context.Favorites.Add(data);
@@ -105,8 +96,8 @@ namespace FullStackAuth_WebAPI.Controllers
                 }
 
                 // Check if the authenticated user is the owner of the Favorite book
-                var userId = User.FindFirstValue("id");
-                if (string.IsNullOrEmpty(userId) || favorites.UserId != userId)
+                var userId = User.FindFirstValue("UserId");
+                if (string.IsNullOrEmpty(userId))
                 {
                     // Return a 401 Unauthorized error if the authenticated user is not the owner of the favorite book 
                     return Unauthorized();

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,51 +23,48 @@ namespace FullStackAuth_WebAPI.Controllers
         }
 
         // GET api/<BookDetailController>/5
-        [HttpGet("{id}"), Authorize]
-        public IActionResult Get(int id)
+        [HttpGet("{bookId}"), Authorize]
+        public IActionResult Get(string bookId)
         {
             try
             {
-           
-                
-
-                //Retrieve all Books Reviews from the database, using Dtos
-                var books = _context.Reviews.Select(b => new ReviewWithUserDTO
+                string userId = User.FindFirstValue("id");
+                var reviews = _context.Reviews.Include(r => r.User).Where(r => r.BookId == bookId).ToList();
+         
+                bool isFavorite = false;
+                var favorites = _context.Favorites.Where(f => f.BookId == bookId && f.UserId == userId).ToList();
+                if(favorites.Count > 0)
                 {
-                    Id = b.Id,
-                    BookId = b.BookId,
-                    Rating = b.Rating,
-                    Text = b.Text,
-                    
-                    Username = new UserForDisplayDto
-                    {
-                        Id = b.User.Id,
-                        FirstName = b.User.FirstName,
-                        LastName = b.User.LastName,
-                        UserName = b.User.UserName,
-                    }
-                }).ToList();
-
-
-                double averageRating = 0.0;
-                if (books.Any())
-                {
-                    averageRating = books.Average(r => r.Rating);
+                    isFavorite = true;
                 }
-
-                // Return the list of book reviews along with the average rating as a response
-                var response = new
+                
+                var response = new BookDetailsDto
                 {
-                    Reviews = books,
-                    AverageRating = averageRating
+                    BookId = bookId,
+                    Reviews =  reviews.Select(r => new ReviewWithUserDTO
+                {
+                    Id = r.Id,
+                    BookId = r.BookId,
+                    Rating = r.Rating,
+                    Text = r.Text,
+                    
+                    User = new UserForDisplayDto
+                    {
+                        Id = r.User.Id,
+                        FirstName = r.User.FirstName,
+                        LastName = r.User.LastName,
+                        UserName = r.User.UserName,
+                    }
+                }).ToList(),
+                    AverageRating = reviews.Average(r => r.Rating),
+                    isFavorite = isFavorite
+                
                 };
-
-                // Return the list of book reviews as a 200 OK response
-                return StatusCode(200, books);
+                return StatusCode(200, response);
             }
             catch (Exception ex)
             {
-                // If an error occurs, return a 500 internal server error with the error message
+                
                 return StatusCode(500, ex.Message);
             }
         }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FullStackAuth_WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230919154251_initial")]
+    [Migration("20230922164254_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -80,8 +80,8 @@ namespace FullStackAuth_WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
+                    b.Property<string>("BookId")
+                        .HasColumnType("longtext");
 
                     b.Property<double>("Rating")
                         .HasColumnType("double");
@@ -197,13 +197,13 @@ namespace FullStackAuth_WebAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c86f725b-f417-444d-9f93-21081c7d46b1",
+                            Id = "8a098ca6-be95-4b6d-a34f-e154a4c2844e",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "74131bf8-b52c-4dea-8a9d-621e499e9762",
+                            Id = "1a99496e-3a72-4a6a-999d-568206311876",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
