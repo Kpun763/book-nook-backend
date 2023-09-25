@@ -95,14 +95,6 @@ namespace FullStackAuth_WebAPI.Controllers
                     return NotFound();
                 }
 
-                // Check if the authenticated user is the owner of the Favorite book
-                var userId = User.FindFirstValue("UserId");
-                if (string.IsNullOrEmpty(userId))
-                {
-                    // Return a 401 Unauthorized error if the authenticated user is not the owner of the favorite book 
-                    return Unauthorized();
-                }
-
                 // Remove the favorite book from the database
                 _context.Favorites.Remove(favorites);
                 _context.SaveChanges();
